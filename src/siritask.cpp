@@ -137,7 +137,7 @@ static QString _args( const QString& exe,const siritask::options& opt,
 
                 qDebug() << opt.allowRootOpt ;
 
-                if( !opt.allowRootOpt.isEmpty() ){
+                if( opt.allowRootOpt == "true" ){
 
                         if (( type == "cryfs" ) || ( type == "encfs" )){
                                 return QString( "-o allow_root" ) ;

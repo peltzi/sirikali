@@ -146,10 +146,6 @@ public:
 					idleTimeOut.clear() ;
 				}
 
-                                if( allowRootAccess == "N/A" ){
-
-					allowRootAccess.clear() ;
-				}
 			}
 		}
 	};
