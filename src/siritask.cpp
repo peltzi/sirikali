@@ -146,6 +146,19 @@ static QString _args( const QString& exe,const siritask::options& opt,
 		return QString() ;
 	}() ;
 
+	auto fuseAllowRootOpt = [ & ](){
+
+                if( !opt.allowRootOpt.isEmpty() ){
+                
+                        if (( type == "cryfs" ) || ( type == "encfs" )){
+                                return QString( "-o allow_root" ) ;
+                        }
+                
+                }
+
+		return QString() ;
+	}() ;
+
 	if( type.isOneOf( "gocryptfs","securefs" ) ){
 
 		auto mode = [ & ](){

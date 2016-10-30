@@ -156,6 +156,7 @@ private :
 	QString m_key ;
 	QString m_deviceOffSet ;
 	QString m_options ;
+        QString m_allowrootoption ;
 	QString m_configFile ;
 	QString m_exe ;
 

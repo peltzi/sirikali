@@ -666,7 +666,7 @@ void sirikali::Show()
 }
 
 void sirikali::unlockVolume( const QString& volume,const QString& mountPath,
-                             const QString& backEnd,const QString& mOpt,const QString& cPath,bool mode )
+                             const QString& backEnd,const QString& mOpt,const QString& allowRootOpt,const QString& cPath,bool mode )
 {
 	if( volume.isEmpty() ){
 
@@ -723,7 +723,7 @@ void sirikali::unlockVolume( const QString& volume,const QString& mountPath,
 					}
 				}() ;
 
-				auto& e = siritask::encryptedFolderMount( { volume,m,w.key,mOpt,cPath,QString(),mode } ) ;
+				auto& e = siritask::encryptedFolderMount( { volume,m,w.key,mOpt,allowRootOpt,cPath,QString(),mode } ) ;
 
 				if( e.await() == siritask::status::success ){
 

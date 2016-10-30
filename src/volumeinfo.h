@@ -32,7 +32,7 @@ public:
 	volumeInfo( const favorites::entry& e )
 	{
 		this->setValues( { e.volumePath,e.mountPointPath,"","",
-		                   e.configFilePath,e.idleTimeOut } ) ;
+		                   e.configFilePath,e.idleTimeOut,e.allowRootAccess } ) ;
 	}
 	volumeInfo( const QStringList& l = QStringList() )
 	{
@@ -57,6 +57,10 @@ public:
 	const QString& idleTimeOut() const
 	{
 		return m_idleTime ;
+	}
+	const QString& allowRoot() const
+	{
+		return m_allowRoot ;
 	}
 	bool isValid() const
 	{
@@ -113,6 +117,17 @@ private:
 			m_mode       = l.at( 3 ) ;
 			m_configPath = l.at( 4 ) ;
 			m_idleTime   = l.at( 5 ) ;
+
+		}else if( s >= 7 ){
+
+			m_volumePath = l.at( 0 ) ;
+			m_mountPoint = l.at( 1 ) ;
+			m_fileSystem = l.at( 2 ) ;
+			m_mode       = l.at( 3 ) ;
+			m_configPath = l.at( 4 ) ;
+			m_idleTime   = l.at( 5 ) ;
+                        m_allowRoot  = l.at( 6 ) ;
+
 		}
 
 		if( m_configPath == "N/A" ){
@@ -132,6 +147,7 @@ private:
 	QString m_mode ;
 	QString m_configPath ;
 	QString m_idleTime ;
+        QString m_allowRoot ;
 };
 
 #endif // VOLUMEENTRYPROPERTIES_H

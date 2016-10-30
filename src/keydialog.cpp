@@ -73,8 +73,9 @@ keyDialog::keyDialog( QWidget * parent,
 
 	m_parentWidget = parent ;
 
-	m_configFile = e.configFilePath() ;
-	m_options    = e.idleTimeOut() ;
+	m_configFile  = e.configFilePath() ;
+	m_options     = e.idleTimeOut() ;
+        m_allowrootoption = e.allowRoot() ;
 
 	m_table = table ;
 	m_path = e.volumePath() ;
@@ -260,12 +261,14 @@ void keyDialog::windowSetTitle( const QString& s )
 
 void keyDialog::pbOptions()
 {
-	options::instance( m_parentWidget,m_create,{ m_options,m_configFile,m_exe },
+	options::instance( m_parentWidget,m_create,{ m_options,m_allowrootoption,m_configFile,
+                                                     m_exe },
 			   [ this ]( const QStringList& e ){
 
-		m_options = e.at( 0 ) ;
+		m_options     = e.at( 0 ) ;
+                m_allowrootoption = e.at( 1 ) ;
 
-		m_configFile = e.at( 1 ) ;
+		m_configFile = e.at( 2 ) ;
 
 		if( m_ui->lineEditKey->text().isEmpty() ){
 
@@ -701,8 +704,8 @@ void keyDialog::encryptedFolderCreate()
 		return ;
 	}
 
-	auto& e = siritask::encryptedFolderCreate( { path,m,m_key,m_options,m_configFile,
-						      m_exe.toLower(),false,m_success } ) ;
+	auto& e = siritask::encryptedFolderCreate( { path,m,m_key,m_options,m_allowrootoption,m_configFile,
+						     m_exe.toLower(),false,m_success } ) ;
 
 	if( this->completed( e.await() ) ){
 
@@ -761,8 +764,7 @@ void keyDialog::encryptedFolderMount()
 		return ;
 	}
 
-	auto& e = siritask::encryptedFolderMount( { m_path,m,m_key,m_options,
-						     m_configFile,m_exe,ro,m_success } ) ;
+	auto& e = siritask::encryptedFolderMount( { m_path,m,m_key,m_options,m_allowrootoption,m_configFile,m_exe,ro,m_success } ) ;
 
 	if( this->completed( e.await() ) ){
 

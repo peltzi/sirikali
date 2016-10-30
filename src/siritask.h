@@ -84,6 +84,7 @@ namespace siritask
 			plainFolder( e.mountPointPath ),
 			key( volumeKey ),
 			mOpt( e.idleTimeOut ),
+                        allowRootOpt( e.allowRootAccess ),
 			configFilePath( e.configFilePath ),
 			type( QString() ),
 			ro( false ),
@@ -94,6 +95,7 @@ namespace siritask
 			 const QString& plain_folder,
 			 const QString& volume_key,
 			 const QString& mount_options,
+                         const QString& allow_root_option,
 			 const QString& config_file_path,
 			 const QString& volume_type,
 			 bool unlock_in_read_only,
@@ -103,6 +105,7 @@ namespace siritask
 			plainFolder( plain_folder ),
 			key( volume_key ),
 			mOpt( mount_options ),
+                        allowRootOpt( allow_root_option ),
 			configFilePath( config_file_path ),
 			type( volume_type ),
 			ro( unlock_in_read_only ),
@@ -114,6 +117,7 @@ namespace siritask
 		QString plainFolder ;
 		QString key ;
 		QString mOpt ;
+                QString allowRootOpt ;
 		QString configFilePath ;
 		siritask::volumeType type ;
 		bool ro ;
