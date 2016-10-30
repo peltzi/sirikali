@@ -89,7 +89,7 @@ public:
 
 			return QString( e ).arg( volumePath,mountPointPath,autoMountVolume,
 						 _opt( configFilePath ),_opt( idleTimeOut ),
-                                                 allowRootAccess ) ;
+                                                 _opt(allowRootAccess) ) ;
 		}
 
 		bool operator!=( const favorites::entry& other ) const
@@ -144,6 +144,11 @@ public:
 				if( idleTimeOut == "N/A" ){
 
 					idleTimeOut.clear() ;
+				}
+
+                                if( allowRootAccess == "N/A" ){
+
+					allowRootAccess.clear() ;
 				}
 			}
 		}

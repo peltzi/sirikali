@@ -117,17 +117,7 @@ private:
 			m_mode       = l.at( 3 ) ;
 			m_configPath = l.at( 4 ) ;
 			m_idleTime   = l.at( 5 ) ;
-
-		}else if( s >= 7 ){
-
-			m_volumePath = l.at( 0 ) ;
-			m_mountPoint = l.at( 1 ) ;
-			m_fileSystem = l.at( 2 ) ;
-			m_mode       = l.at( 3 ) ;
-			m_configPath = l.at( 4 ) ;
-			m_idleTime   = l.at( 5 ) ;
                         m_allowRoot  = l.at( 6 ) ;
-
 		}
 
 		if( m_configPath == "N/A" ){
@@ -139,6 +129,12 @@ private:
 
 			m_idleTime.clear() ;
 		}
+
+		if( m_allowRoot == "false" ){
+
+			m_allowRoot.clear() ;
+		}
+
 	}
 
 	QString m_volumePath ;

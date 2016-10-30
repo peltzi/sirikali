@@ -133,6 +133,21 @@ static QString _args( const QString& exe,const siritask::options& opt,
 		}
 	}() ;
 
+	auto fuseAllowRootOpt = [ & ](){
+
+                qDebug() << opt.allowRootOpt ;
+
+                if( !opt.allowRootOpt.isEmpty() ){
+
+                        if (( type == "cryfs" ) || ( type == "encfs" )){
+                                return QString( "-o allow_root" ) ;
+                        }
+
+                }
+
+		return QString() ;
+	}() ;
+
 	auto configPath = [ & ](){
 
 		if( type.isOneOf( "cryfs","gocryptfs","securefs" ) ){
@@ -146,18 +161,6 @@ static QString _args( const QString& exe,const siritask::options& opt,
 		return QString() ;
 	}() ;
 
-	auto fuseAllowRootOpt = [ & ](){
-
-                if( !opt.allowRootOpt.isEmpty() ){
-                
-                        if (( type == "cryfs" ) || ( type == "encfs" )){
-                                return QString( "-o allow_root" ) ;
-                        }
-                
-                }
-
-		return QString() ;
-	}() ;
 
 	if( type.isOneOf( "gocryptfs","securefs" ) ){
 
@@ -192,16 +195,23 @@ static QString _args( const QString& exe,const siritask::options& opt,
 			}
 		}
 	}else{
-		auto e = QString( "%1 %2 %3 %4 %5 %6 -o fsname=%7@%8 -o subtype=%9" ) ;
 
-		auto opts = e.arg( exe,cipherFolder,mountPoint,mountOptions,configPath,
-				   separator,type.name(),cipherFolder,type.name() ) ;
+                auto m = QString( "%1 %2 %3 %4 %5 %6 " ) ;
+                auto main_cmd = m.arg( exe,cipherFolder,mountPoint,mountOptions,
+                                       configPath,separator) ;
+
+		auto o = QString( "%1 -o fsname=%2@%3 -o subtype=%4" ) ;
+
+		auto opts = o.arg( fuseAllowRootOpt,type.name(),cipherFolder,
+                                   type.name() ) ;
+
+                auto full = main_cmd + opts ;
 
 		if( opt.ro ){
 
-			return opts + " -o ro" ;
+			return full + " -o ro" ;
 		}else{
-			return opts + " -o rw" ;
+			return full + " -o rw" ;
 		}
 	}
 }
