@@ -58,6 +58,7 @@ favorites::favorites( QWidget * parent ) : QDialog( parent ),m_ui( new Ui::favor
 	m_ui->lineEditConfigFilePath->setEnabled( false ) ;
 
 	m_ui->cbAutoMount->setChecked( false ) ;
+        m_ui->cbAllowRoot->setChecked( false ) ;
 
 	auto table = m_ui->tableWidget ;
 
@@ -66,6 +67,7 @@ favorites::favorites( QWidget * parent ) : QDialog( parent ),m_ui( new Ui::favor
 	table->setColumnWidth( 2,100 ) ;
 	table->setColumnWidth( 3,140 ) ;
 	table->setColumnWidth( 4,115 ) ;
+        table->setColumnWidth( 5,100 ) ;
 
 	this->addAction( [ this ](){
 
@@ -165,6 +167,9 @@ void favorites::itemClicked( QTableWidgetItem * current,bool clicked )
 		connect( m.addAction( tr( "Toggle AutoMount" ) ),
 			 SIGNAL( triggered() ),this,SLOT( toggleAutoMount() ) ) ;
 
+		connect( m.addAction( tr( "Toggle AllowRoot" ) ),
+			 SIGNAL( triggered() ),this,SLOT( toggleAllowRoot() ) ) ;
+
 		m.addSeparator() ;
 
 		connect( m.addAction( tr( "Remove Selected Entry" ) ),
@@ -208,6 +213,34 @@ void favorites::toggleAutoMount()
 		auto row = table->currentRow() ;
 
 		auto item = table->item( row,2 ) ;
+
+		auto e = this->getEntry( row ) ;
+
+		item->setText( [ & ](){
+
+			if( item->text() == "true" ){
+
+				return "false" ;
+			}else{
+				return "true" ;
+			}
+		}() ) ;
+
+		auto f = this->getEntry( row ) ;
+
+		utility::replaceFavorite( e,f ) ;
+	}
+}
+
+void favorites::toggleAllowRoot()
+{
+	auto table = m_ui->tableWidget ;
+
+	if( table->rowCount() > 0 ){
+
+		auto row = table->currentRow() ;
+
+		auto item = table->item( row,5 ) ;
 
 		auto e = this->getEntry( row ) ;
 
@@ -288,11 +321,22 @@ void favorites::add()
 		}
 	}() ;
 
+	auto allowRoot = [ this ](){
+
+		if( m_ui->cbAllowRoot->isChecked() ){
+
+			return "true" ;
+		}else{
+			return "false" ;
+		}
+	}() ;
+
 	QStringList e = { dev,
 			  path,
 			  autoMount,
 			  _option( m_ui->lineEditConfigFilePath->text() ),
-			  _option( m_ui->lineEditIdleTimeOut->text() ) } ;
+			  _option( m_ui->lineEditIdleTimeOut->text() ),
+                          allowRoot } ;
 
 	this->addEntries( e ) ;
 

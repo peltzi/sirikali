@@ -63,7 +63,8 @@ public:
 					 mountPointPath,
 					 autoMountVolume,
 					 configFilePath,
-					 idleTimeOut } ;
+					 idleTimeOut,
+                                         allowRootAccess } ;
 			}
 		}
 
@@ -84,10 +85,11 @@ public:
 				}
 			} ;
 
-			auto e = "%1\t%2\t%3\t%4\t%5\t" ;
+			auto e = "%1\t%2\t%3\t%4\t%5\t%6\t" ;
 
 			return QString( e ).arg( volumePath,mountPointPath,autoMountVolume,
-						 _opt( configFilePath ),_opt( idleTimeOut ) ) ;
+						 _opt( configFilePath ),_opt( idleTimeOut ),
+                                                 allowRootAccess ) ;
 		}
 
 		bool operator!=( const favorites::entry& other ) const
@@ -101,7 +103,8 @@ public:
 				mountPointPath  == other.mountPointPath &&
 				autoMountVolume == other.autoMountVolume &&
 				configFilePath  == other.configFilePath &&
-				idleTimeOut     == other.idleTimeOut ;
+				idleTimeOut     == other.idleTimeOut &&
+                                allowRootAccess == other.allowRootAccess ;
 		}
 
 		bool autoMount() const
@@ -109,22 +112,29 @@ public:
 			return autoMountVolume == "true" ;
 		}
 
+		bool allowRoot() const
+		{
+			return allowRootAccess == "true" ;
+		}
+
 		QString volumePath ;
 		QString mountPointPath ;
 		QString autoMountVolume ;
 		QString configFilePath ;
 		QString idleTimeOut ;
+                QString allowRootAccess ;
 
 	private:
 		void config( const QStringList& e )
 		{
-			if( e.size() > 4 ){
+			if( e.size() > 5 ){
 
 				volumePath      = e.at( 0 ) ;
 				mountPointPath  = e.at( 1 ) ;
 				autoMountVolume = e.at( 2 ) ;
 				configFilePath  = e.at( 3 ) ;
 				idleTimeOut     = e.at( 4 ) ;
+                                allowRootAccess = e.at( 5 ) ;
 
 				if( configFilePath == "N/A" ){
 
@@ -152,6 +162,7 @@ public slots:
 	void HideUI( void ) ;
 private slots:
 	void toggleAutoMount( void ) ;
+        void toggleAllowRoot( void ) ;
 	void configPath( void ) ;
 	void removeEntryFromFavoriteList( void ) ;
 	void add( void ) ;
